@@ -6,27 +6,17 @@ package frc.robot.subsystems.led;
 
 import static frc.robot.subsystems.led.LEDConstants.*;
 
-import edu.wpi.first.wpilibj.AddressableLED;
-import edu.wpi.first.wpilibj.AddressableLEDBuffer;
-import edu.wpi.first.wpilibj.LEDPattern;
-import edu.wpi.first.wpilibj.util.Color;
+import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class LEDSubsystem extends SubsystemBase {
-  private final AddressableLED led;
-  private final AddressableLEDBuffer ledBuffer;
+  private final PWM led;
 
   private int colorIndex = 0;
 
   public LEDSubsystem() {
-    led = new AddressableLED(port);
-
-    ledBuffer = new AddressableLEDBuffer(LEDLength);
-    led.setLength(ledBuffer.getLength());
-
-    led.setData(ledBuffer);
-    led.start();
+    led = new PWM(port);
   }
 
   /**
@@ -56,7 +46,6 @@ public class LEDSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    led.setData(ledBuffer);
   }
 
   @Override
@@ -64,22 +53,38 @@ public class LEDSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run during simulation
   }
 
+  public void setColor(BlinkinValues input) {
+    led.setPulseTimeMicroseconds(input.value);
+  }
+
+  public void setColor(int input) {
+    led.setPulseTimeMicroseconds(input);
+  }
+
+  public int getColorValue() {
+    return led.getPulseTimeMicroseconds();
+  }
+
+  public String getColorName() {
+    return BlinkinValues.values()[led.getPulseTimeMicroseconds()].name();
+  }
+
   public void start() {
-    led.start();
+    setColor(BlinkinValues.WHITE);
   }
 
   public void stop() {
-    led.stop();
+    setColor(BlinkinValues.BLACK);
   }
 
-  public void setPattern(LEDPattern pattern) {
-    pattern.applyTo(ledBuffer);
-  }
+  // public void setPattern(LEDPattern pattern) {
+  //   pattern.applyTo(ledBuffer);
+  // }
 
-  public void solidColor(Color color) {
-    LEDPattern solid = LEDPattern.solid(color);
-    setPattern(solid);
-  }
+  // public void solidColor(Color color) {
+  //   LEDPattern solid = LEDPattern.solid(color);
+  //   setPattern(solid);
+  // }
 
   public void nextColor(boolean reverse) {
     if (!reverse) {
@@ -87,7 +92,8 @@ public class LEDSubsystem extends SubsystemBase {
     } else {
       colorIndex--;
     }
-    
-    solidColor(Color.fromHSV((int) (Math.PI / 6 * colorIndex), 255, 255));
+
+    int currentColor = getColorValue();
+    setColor(Math.abs(currentColor + colorIndex) % BlinkinValues.values().length);
   }
 }
