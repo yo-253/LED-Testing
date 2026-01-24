@@ -63,12 +63,6 @@ public class RobotContainer {
     driver_B.onTrue(
       new RunCommand(() -> ledSubsystem.stop(), ledSubsystem)
     );
-    driver_RB.onTrue(
-      new RunCommand(() -> ledSubsystem.nextColor(false), ledSubsystem)
-    );
-    driver_LB.onTrue(
-      new RunCommand(() -> ledSubsystem.nextColor(true), ledSubsystem)
-    );
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
     // m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());

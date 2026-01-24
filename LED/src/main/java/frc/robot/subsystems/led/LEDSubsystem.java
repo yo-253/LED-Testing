@@ -76,24 +76,4 @@ public class LEDSubsystem extends SubsystemBase {
   public void stop() {
     setColor(BlinkinValues.BLACK);
   }
-
-  // public void setPattern(LEDPattern pattern) {
-  //   pattern.applyTo(ledBuffer);
-  // }
-
-  // public void solidColor(Color color) {
-  //   LEDPattern solid = LEDPattern.solid(color);
-  //   setPattern(solid);
-  // }
-
-  public void nextColor(boolean reverse) {
-    if (!reverse) {
-      colorIndex++;
-    } else {
-      colorIndex--;
-    }
-
-    int currentColor = getColorValue();
-    setColor(Math.abs(currentColor + colorIndex) % BlinkinValues.values().length);
-  }
 }
