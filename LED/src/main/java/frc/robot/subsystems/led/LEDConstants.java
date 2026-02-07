@@ -1,7 +1,12 @@
 package frc.robot.subsystems.led;
 
 public class LEDConstants {
-  public static final int port = 1;
+  public static final int ledPort = 1;
+
+  public static final BlinkinValues ledStowColorValue = BlinkinValues.RED;
+  public static final BlinkinValues ledScoreColorValue = BlinkinValues.GREEN;
+  public static final BlinkinValues ledClimbColorValue = BlinkinValues.BLUE;
+  public static final BlinkinValues ledDefaultColorValue = BlinkinValues.BLACK;
 
   public enum BlinkinValues {
     /*
@@ -129,5 +134,5 @@ public class LEDConstants {
     private BlinkinValues(int value) {
       this.value = value;
     }
-  };
+  }
 }

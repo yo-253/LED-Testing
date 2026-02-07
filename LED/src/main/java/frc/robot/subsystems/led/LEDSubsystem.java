@@ -9,14 +9,15 @@ import static frc.robot.subsystems.led.LEDConstants.*;
 import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.States;
 
 public class LEDSubsystem extends SubsystemBase {
   private final PWM led;
 
-  private int colorIndex = 0;
+  private States state;
 
   public LEDSubsystem() {
-    led = new PWM(port);
+    led = new PWM(ledPort);
   }
 
   /**
@@ -46,6 +47,7 @@ public class LEDSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    stateCheck(state);
   }
 
   @Override
@@ -75,5 +77,26 @@ public class LEDSubsystem extends SubsystemBase {
 
   public void stop() {
     setColor(BlinkinValues.BLACK);
+  }
+
+  public void setState(States state) {
+    this.state = state;
+  }
+
+  private void stateCheck(States state) {
+    switch (state) {
+      case CLIMB:
+        setColor(ledClimbColorValue);
+        break;
+      case SCORE:
+        setColor(ledScoreColorValue);
+        break;
+      case STOW:
+        setColor(ledStowColorValue);
+        break;
+      default:
+        setColor(ledDefaultColorValue);
+        break;
+    }
   }
 }
